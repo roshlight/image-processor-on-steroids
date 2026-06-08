@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>Image Processor on Steroids</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 960px;
+            margin: 40px auto;
+            padding: 0 20px;
+            background: #fafafa;
+            color: #111;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+        }
+
+        form {
+            background: white;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            margin-bottom: 32px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="file"],
+        textarea,
+        button {
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: 8px;
+            margin-bottom: 16px;
+        }
+
+        textarea {
+            min-height: 100px;
+            font-size: 16px;
+            padding: 10px;
+            resize: vertical;
+        }
+
+        button {
+            padding: 12px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            background: white;
+        }
+
+        pre {
+            background: #111;
+            color: #eee;
+            padding: 16px;
+            overflow-x: auto;
+            border-radius: 12px;
+            max-height: 500px;
+        }
+
+        .status-ok {
+            color: green;
+            font-weight: bold;
+        }
+
+        .status-failed {
+            color: red;
+            font-weight: bold;
+        }
+
+        #loading {
+            display: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Image Processor on Steroids</h1>
+    <p>Загрузи изображение и введи текстовую инструкцию.</p>
+
+    <form id="edit-form" action="/edit" method="post" enctype="multipart/form-data">
+        <label for="image-input">Image</label>
+        <input id="image-input" type="file" name="image" accept="image/*" required>
+
+        <label for="instruction-input">Instruction</label>
+        <textarea
+            id="instruction-input"
+            name="instruction"
+            required
+            placeholder="Например: Сделай фото ярче, поверни на 90 градусов вправо и добавь надпись HELLO"
+        ></textarea>
+
+        <button id="run-button" type="submit">Run agent</button>
+        <p id="loading">Agent is running, please wait...</p>
+    </form>
+
+    {% if result %}
+        <h2>Result</h2>
+
+        {% if result.status == "ok" %}
+            <p class="status-ok">Status: OK</p>
+        {% else %}
+            <p class="status-failed">Status: FAILED</p>
+            <p>{{ result.error }}</p>
+        {% endif %}
+
+        <p><b>Instruction:</b> {{ result.instruction }}</p>
+        <p><b>Output dir:</b> {{ result.output_dir }}</p>
+
+        {% if result.final_image_url %}
+            <h3>Final image</h3>
+            <img src="{{ result.final_image_url }}" alt="final image">
+        {% endif %}
+
+        <h3>Logs</h3>
+        <pre>{{ result.logs_text }}</pre>
+    {% endif %}
+
+    <script>
+        const form = document.getElementById("edit-form");
+        const button = document.getElementById("run-button");
+        const loading = document.getElementById("loading");
+
+        form.addEventListener("submit", function () {
+            console.log("FORM SUBMIT TRIGGERED");
+
+            button.disabled = true;
+            button.innerText = "Running...";
+            loading.style.display = "block";
+        });
+    </script>
+</body>
+</html>

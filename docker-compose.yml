@@ -1,0 +1,16 @@
+services:
+  image-agent:
+    build: .
+    container_name: image-processor-agent
+    env_file:
+      - .env
+    volumes:
+      - ./assets:/app/assets
+      - ./outputs:/app/outputs
+      - ./prompts:/app/prompts
+      - ./src:/app/src
+      - ./templates:/app/templates
+      - ./run_agent.py:/app/run_agent.py
+    ports:
+      - "8000:8000"
+    command: uvicorn src.api:app --host 0.0.0.0 --port 8000

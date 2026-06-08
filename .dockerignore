@@ -1,6 +1,7 @@
-.env
-.DS_Store
+.git
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
+.DS_Store
+.env
 outputs/
