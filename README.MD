@@ -577,21 +577,6 @@ docker compose logs -f
 
 ---
 
-## Что не коммитить
-
-В репозиторий не нужно добавлять:
-
-```text
-.env
-outputs/
-__pycache__/
-.DS_Store
-.ipynb_checkpoints/
-model_cache/
-```
-
----
-
 ## Roadmap
 
 Планируемые улучшения:
