@@ -18,3 +18,7 @@ class EditAgentState(TypedDict, total=False):
 
     logs: list[dict[str, Any]]
     error: str | None
+
+    last_bbox: list[int] | None
+    last_mask_path: str | None
+    target_object: str | None

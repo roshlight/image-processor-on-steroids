@@ -539,3 +539,9 @@ TOOL_REGISTRY = {
     "create_center_mask": create_center_mask,
     "inpaint_opencv": inpaint_opencv,
 }
+
+from src.tools.segmentation import segment_object
+from src.tools.inpainting import inpaint_lama
+
+TOOL_REGISTRY["segment_object"] = segment_object
+TOOL_REGISTRY["inpaint_lama"] = inpaint_lama

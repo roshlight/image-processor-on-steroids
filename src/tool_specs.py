@@ -130,6 +130,30 @@ TOOL_SPECS = [
         "description": "Удаляет объект по последней маске через OpenCV inpainting.",
         "args": {"radius": "int, например 3"},
     },
+    {
+        "name": "segment_object",
+        "kind": "mask_producer",
+        "description": (
+            "Находит объект по текстовому описанию и создаёт маску. "
+            "Используется перед inpaint_lama для удаления объектов."
+        ),
+        "args": {
+            "target": "str, например 'ficus plant on the right'",
+            "padding": "int, например 20"
+        },
+    },
+    {
+        "name": "inpaint_lama",
+        "kind": "image_mask_to_image",
+        "description": (
+            "Удаляет объект по последней созданной маске с помощью LaMa/IOPaint. "
+            "Используется после segment_object."
+        ),
+        "args": {
+            "mask_source": "last_mask",
+            "device": "cpu"
+        },
+    },
 ]
 
 
